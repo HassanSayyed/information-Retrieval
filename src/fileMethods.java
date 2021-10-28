@@ -96,6 +96,14 @@ public class fileMethods {
         return wordsLinkedList;
 
     }
+	
+	
+	public static void deleteAllFilesFromDirectory(File dir) {
+	    for (File file: dir.listFiles()) {
+	        if (!file.isDirectory())
+	            file.delete();
+	    }
+	}
 	 
 	
 

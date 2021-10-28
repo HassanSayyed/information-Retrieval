@@ -20,12 +20,16 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         String  stpFileName = "";  
 
         File dataFolder = new File("C:\\\\Users\\\\LENOVO\\\\Desktop\\\\IR\\\\data");
+        File stpFolder = new File("C:\\\\Users\\\\LENOVO\\\\Desktop\\\\IR\\\\dataStpResults");
+        File sfxFolder = new File("C:\\\\Users\\\\LENOVO\\\\Desktop\\\\IR\\\\dataSfxResults");
+        
+        
         
         File[] dataFiles = dataFolder.listFiles();
         
         
        
-        
+        fileMethods.deleteAllFilesFromDirectory(stpFolder);
         
         for (File f : dataFiles) {
         	
@@ -57,8 +61,10 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         
         
         
-        File stpFolder = new File("C:\\\\Users\\\\LENOVO\\\\Desktop\\\\IR\\\\dataStpResults");
+       
         File[] stpFiles = stpFolder.listFiles();
+        
+        fileMethods.deleteAllFilesFromDirectory(sfxFolder);
         
         for(File f : stpFiles ) {
         	
@@ -88,7 +94,7 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         
         
         
-        File sfxFolder = new File("C:\\\\Users\\\\LENOVO\\\\Desktop\\\\IR\\\\dataStpResults");
+        
         File[] sfxFiles = stpFolder.listFiles();
 
         
