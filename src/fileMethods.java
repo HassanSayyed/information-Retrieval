@@ -62,9 +62,10 @@ public class fileMethods {
 
 	        while (line != null) {
 	            stringBuilder.append(line);
-	            stringBuilder.append("\n");
+	            stringBuilder.append(" \n");
 	            line = bufferedReader.readLine();
 	        }
+
 	        return stringBuilder.toString();
 	    }
 	    finally {
