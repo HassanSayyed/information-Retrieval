@@ -4,7 +4,13 @@ import java.io.FileNotFoundException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
+
+import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 
 
@@ -14,7 +20,7 @@ public static void main(String[] args) throws FileNotFoundException, IOException
 	
 		
 
-        String filePathString, result = null;
+        String dataFileString, stpResult = null;
 
         PrintWriter printWriter;
         String  stpFileName = "";  
@@ -38,17 +44,17 @@ public static void main(String[] args) throws FileNotFoundException, IOException
              stpFileName =  f.getName().split("[.]")[0]  + ".txt";
 
 
-            filePathString = fileMethods.fileToSentence("C:\\Users\\LENOVO\\Desktop\\IR\\data\\" + f.getName());
+            dataFileString = fileMethods.fileToSentence("C:\\Users\\LENOVO\\Desktop\\IR\\data\\" + f.getName());
             
             
-            result = StringStopWordsMethods.sentenceWithoutStopListWords(filePathString);
+            stpResult = StringStopWordsMethods.sentenceWithoutStopListWords(dataFileString);
             
             
             File myObj = new File("C:\\Users\\LENOVO\\Desktop\\IR\\dataStpResults\\"+ stpFileName);
             myObj.createNewFile();
             
             printWriter = new PrintWriter("C:\\Users\\LENOVO\\Desktop\\IR\\dataStpResults\\" +  stpFileName , "UTF-8");
-            printWriter.print(result.replaceAll("\\s+", System.getProperty("line.separator")));      
+            printWriter.print(stpResult.replaceAll("\\s+", System.getProperty("line.separator")));      
             printWriter.close();
             
             
@@ -76,8 +82,7 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         	LinkedList<String> stpFileStringLinkedList = fileMethods.textFileToStringList("C:\\Users\\LENOVO\\Desktop\\IR\\dataStpResults\\"+f.getName());
         	//System.out.println("@@"+ stpFileStringLinkedList.toString());
         	
-        	Stemmer proterStemmer = new Stemmer();
-            String sfxResult = proterStemmer.completeStem(stpFileStringLinkedList);
+            String sfxResult = new Stemmer().completeStem(stpFileStringLinkedList);
             
             File myObj = new File("C:\\Users\\LENOVO\\Desktop\\IR\\dataSfxResults\\"+ sfxFileName);
             myObj.createNewFile();
@@ -91,11 +96,39 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         
         
         System.out.println("------------------------Phase 2-------------------");
+        System.out.println("**************************************************");
         
         
         
         
-        File[] sfxFiles = stpFolder.listFiles();
+        File[] sfxFiles = sfxFolder.listFiles();
+       
+        HashSet<String> allWordsHashSet = new HashSet<>();
+        
+        for(File f: sfxFiles) {
+        	LinkedList<String> allFileWords = fileMethods.textFileToStringList("C:\\Users\\LENOVO\\Desktop\\IR\\dataSfxResults\\"+f.getName());
+        	
+        	for(String word : allFileWords) {
+        		allWordsHashSet.add(word);
+        	}
+        
+        }
+        
+        ArrayList<String> allWordsWithoutRepList = new ArrayList<>(allWordsHashSet);
+        Collections.sort(allWordsWithoutRepList);
+        
+        
+        double[][] matrix = new double[sfxFiles.length][allWordsWithoutRepList.size()];
+        Arrays.stream(matrix).forEach(a -> Arrays.fill(a, 0));
+        
+       
+        
+        for (int x=0; x < sfxFiles.length; x++) {
+        	LinkedList<String> allFileWords = fileMethods.textFileToStringList("C:\\Users\\LENOVO\\Desktop\\IR\\dataSfxResults\\"+sfxFiles[x].getName());
+        	
+        	
+        }
+        
         
         
         

@@ -1,5 +1,7 @@
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class StringStopWordsMethods {
@@ -9,7 +11,7 @@ public class StringStopWordsMethods {
 	 *  DOTENDING matches words ending with 1 or more .'s
 	 */	
 	private static final String EMAILREGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-	private static final String NOTWEIRDChars = "[^a-zA-Z0-9₀-₉⁰-⁹⁺⁽⁾ @.#%^&*()><:?!]";
+	private static final String NOTWEIRDCHARS = "[^a-zA-Z0-9₀-₉⁰-⁹⁺⁽⁾ @.#%^&*()><:?!]";
 	private static final String DOTENDING = ".*(.)+";
 	
 	
@@ -22,27 +24,21 @@ public class StringStopWordsMethods {
     	if(sentence==null | sentence.isEmpty())
     		return "";
     	
-    	 String[] stopList = STOPLIST.stopList;
+    	Set<String> stopSet = STOPLIST.STOPLISTSET;
     	
-        // end result regex should be like this " \b(?!word1|word2|word3|word4)\b\S+ "
-        String pattern = "\\b(";
-        for (int i = 0; i < stopList.length; i++) {
-            if (i > 0) {
-                pattern += "|";
-            }
-            pattern += stopList[i];
-        }
-        pattern += ")\\b";
-        
-        sentence = sentence.toLowerCase();
-        String sentenceWithoutStopWords = sentence
-        		.replaceAll(pattern, "") //remove stop words 
-                .replaceAll(NOTWEIRDChars, "").trim();//remove all weird special characters
-        		sentenceWithoutStopWords = sybolsStopWordsCheck(sentenceWithoutStopWords);
-                sentenceWithoutStopWords.replaceAll("\\s+", System.getProperty("line.separator")  )
+    	StringBuilder sentenceBuilderWithoutStopSetWords = new StringBuilder();
+    	for (String word : sentence.split("[\\n\\s+]")) {
+    		if(!stopSet.contains(word))
+    			sentenceBuilderWithoutStopSetWords.append(word.toLowerCase()+" ");
+    	}
+    	
+    	String sentenceWithoutStopSetWords = !sentenceBuilderWithoutStopSetWords.isEmpty() ? sentenceBuilderWithoutStopSetWords.toString() : "";
+    	sentenceWithoutStopSetWords.replaceAll(NOTWEIRDCHARS, "").trim();//remove all weird special characters
+    	sentenceWithoutStopSetWords = sybolsStopWordsCheck(sentenceWithoutStopSetWords);
+    	sentenceWithoutStopSetWords.replaceAll("\\s+", System.getProperty("line.separator")  )
                 .trim();//fix first line spacing
         
-        return sentenceWithoutStopWords;
+        return sentenceWithoutStopSetWords;
     }
     
     private static String sybolsStopWordsCheck(String words) {
@@ -53,7 +49,7 @@ public class StringStopWordsMethods {
     		if(list.get(i).contains("@")) {
     			list.set(i, emailatStopWordVerification(list.get(i)));
     			
-    		}else if(list.get(i).contains(".")) {
+    		} if(list.get(i).contains(".")) {
     			list.set(i, dotStopWordVerification(list.get(i)));
     		}
     	}
@@ -91,6 +87,16 @@ public class StringStopWordsMethods {
     
 
      }
+    
+    public static int stringCountInLinkedList(String word,LinkedList<String> linkedList) {
+    	int count = 0;
+    	
+    	for (String s: linkedList) {
+    		if(s == word) count++;
+    	}
+    	
+		return count;
+	}
 }
 	
 

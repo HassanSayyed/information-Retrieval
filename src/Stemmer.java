@@ -37,6 +37,30 @@ public class Stemmer {
     }
 	
 	
+	
+	public  String completeStem(String word) {
+		
+		if (word.trim().isEmpty() || word == null)
+			return "";
+        //Porter Algorithm
+        
+			String[] arrstr = word.trim().split("\\s+");
+			StringBuilder stringBuilder = new StringBuilder();
+			
+			for (String s: arrstr) {
+            String s1 = this.step1(s);
+            String s2 = this.step2(s1);
+            String s3 = this.step3(s2);
+            String s4 = this.step4(s3);
+            String s5 = this.step5(s4);
+            stringBuilder.append(s5+" ");
+            
+			}
+        
+        return !stringBuilder.isEmpty() ? stringBuilder.toString(): "";
+    }
+	
+	
 
    @SuppressWarnings("removal")
 private String Clean(String str) {
