@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
@@ -121,15 +122,34 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         double[][] matrix = new double[sfxFiles.length][allWordsWithoutRepList.size()];
         Arrays.stream(matrix).forEach(a -> Arrays.fill(a, 0));
         
-       
+       /*Fill the matrix row by row each iteration*/
         
         for (int x=0; x < sfxFiles.length; x++) {
-        	LinkedList<String> allFileWords = fileMethods.textFileToStringList("C:\\Users\\LENOVO\\Desktop\\IR\\dataSfxResults\\"+sfxFiles[x].getName());
+        	int[] tempRow = fileMethods.checkOccurenceOfwordsListInTextFile("C:\\Users\\LENOVO\\Desktop\\IR\\dataSfxResults\\"+sfxFiles[x].getName(),allWordsWithoutRepList);
         	
-        	
+        	for (int i=0; i <allWordsWithoutRepList.size();i++) {
+        		matrix[x][i] = tempRow[i];
+        	}
+        }
+        
+        int[] docFreq = new int[allWordsWithoutRepList.size()];
+        
+        for(int w =0; w < allWordsWithoutRepList.size(); w++) {
+        	int dFcount =0;
+        	for(int f =0; f<sfxFiles.length; f++) {
+        		if(matrix[f][w]!=0)dFcount++;
+        	}
+        	docFreq[w]= dFcount;
+        }
+        
+        System.out.println("******");
+        for(int i=0;i<allWordsWithoutRepList.size();i++) {
+        	System.out.println(allWordsWithoutRepList.get(i)+" "+docFreq[i]);
         }
         
         
+        System.out.println("------------------------Phase 3-------------------");
+        System.out.println("**************************************************");
         
         
 	}

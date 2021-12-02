@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,18 +20,31 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 
 public class fileMethods {
-
 	
 	
-	//method that read a file and return a Sentence as a string
+	public static int[] checkOccurenceOfwordsListInTextFile(String filePath, ArrayList<String> allWordsWithoutRep) throws FileNotFoundException {
+		int[] matrixRow = new int[allWordsWithoutRep.size()];
+		LinkedList<String> allFileWordsList = textFileToStringList(filePath);  
+		
+		for (int i=0; i<allWordsWithoutRep.size(); i++) {
+			String word = allWordsWithoutRep.get(i);
+			int count = 0;
+			for (String temp: allFileWordsList) {
+				if(temp.equals(word)) count++;
+			}
+			matrixRow[i] = count;
+		}
+		
+		return matrixRow;
+	}
+	
+	
+	
 	public static String fileToSentence(String fileName) throws FileNotFoundException, IOException {
 		int fileNameLength = fileName.length();
 	   final List<String> imageTypeList =  Arrays.asList(".png", ".gif", ".jpg", "tiff");
 		
-		/*if (fileNameLength<5) {
-			return null;
-			
-		} */ if (fileName.substring(fileNameLength - 4).equals(".txt") ){
+		 if (fileName.substring(fileNameLength - 4).equals(".txt") ){
 			
 			return textFileToSentence(fileName);
 			

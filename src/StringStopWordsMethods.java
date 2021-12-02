@@ -21,14 +21,14 @@ public class StringStopWordsMethods {
     	
 
     	
-    	if(sentence==null | sentence.isEmpty())
+    	if(sentence==null || sentence.isEmpty())
     		return "";
     	
     	Set<String> stopSet = STOPLIST.STOPLISTSET;
     	
     	StringBuilder sentenceBuilderWithoutStopSetWords = new StringBuilder();
     	for (String word : sentence.split("[\\n\\s+]")) {
-    		if(!stopSet.contains(word))
+    		if(!stopSet.contains(word.toLowerCase()))
     			sentenceBuilderWithoutStopSetWords.append(word.toLowerCase()+" ");
     	}
     	
