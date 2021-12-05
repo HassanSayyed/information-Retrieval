@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
+import java.util.LinkedList;
+import java.util.List;
+
+
 
 
 
@@ -142,9 +143,14 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         	docFreq[w]= dFcount;
         }
         
+        List<String> newStopWordsList = new ArrayList<>();
+        
         System.out.println("******");
-        for(int i=0;i<allWordsWithoutRepList.size();i++) {
-        	System.out.println(allWordsWithoutRepList.get(i)+" "+docFreq[i]);
+        for (int i: docFreq) {
+        	if(i==sfxFiles.length) {
+        		newStopWordsList.add(allWordsWithoutRepList.get(i));
+        		System.out.println("STP word found : "+allWordsWithoutRepList.get(i));
+        	}
         }
         
         
