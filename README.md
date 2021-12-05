@@ -12,6 +12,11 @@
  2. Removal of suffixes using Porter Stemmer Algorithm
  3. Write the results in SFX directory as Text files
  
+ ###### Phase 3 Inverted file
+ 1. Read data from SFX directory
+ 2. Initialize and fill the inverted file matrix
+ 3. Detect the new stopwords 
+ 
  # System Requirements:
  1. Java 13, you can download it from https://www.oracle.com/java/technologies/javase/jdk13-archive-downloads.html
  2. PDF Reader Library, you can download it from https://downloads.apache.org/pdfbox/2.0.24/
