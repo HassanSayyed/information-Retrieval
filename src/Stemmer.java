@@ -17,11 +17,11 @@ public class Stemmer {
 	
 	
 	
-	public  String completeStem(LinkedList<String> tokens1) {
+	public  String completeStem(LinkedList<String> words) {
         //Porter Algorithm
         
         LinkedList<String> arrstr = new LinkedList<String>();
-        for (String i : tokens1) {
+        for (String i : words) {
             String s1 = this.step1(i);
             String s2 = this.step2(s1);
             String s3 = this.step3(s2);

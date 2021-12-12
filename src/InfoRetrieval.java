@@ -11,6 +11,9 @@ import java.util.HashSet;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
+
+import org.bouncycastle.asn1.BEROctetStringGenerator;
 
 
 
@@ -143,9 +146,10 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         	docFreq[w]= dFcount;
         }
         
+        // detect new stop words
         List<String> newStopWordsList = new ArrayList<>();
         
-        System.out.println("******");
+        System.out.println(" ");
         for (int i: docFreq) {
         	if(i==sfxFiles.length) {
         		newStopWordsList.add(allWordsWithoutRepList.get(i));
@@ -154,8 +158,32 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         }
         
         
+        // Calculate TFIDF = TF (term freq.) * IDF (inverse doc freq)
+        
+        for(int w=0; w < allWordsWithoutRepList.size(); w++) {
+        	for(int f=0; f < sfxFiles.length; f++) {
+        		matrix[f][w] = matrix[f][w] * Math.log10(sfxFiles.length/ Double.valueOf(docFreq[w]));
+        	}
+        }
+        
+        
+        
+        
         System.out.println("------------------------Phase 3-------------------");
         System.out.println("**************************************************");
+        
+        
+        
+        System.out.println(" Search query: ");
+        Scanner inputScanner =new  Scanner(System.in);
+        String query = StringStopWordsMethods.sentenceWithoutStopListWords(inputScanner.nextLine()); 
+        inputScanner.close();
+        
+        LinkedList<String> queryList = new LinkedList<>(Arrays.asList(query.split("[\\n\\s+]")));
+        
+        query = new Stemmer().completeStem(queryList);
+        
+        System.out.println(query);
         
         
 	}
