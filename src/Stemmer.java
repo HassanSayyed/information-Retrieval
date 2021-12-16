@@ -22,13 +22,14 @@ public class Stemmer {
         
         LinkedList<String> arrstr = new LinkedList<String>();
         for (String i : words) {
+        	if(i != "") {
             String s1 = this.step1(i);
             String s2 = this.step2(s1);
             String s3 = this.step3(s2);
             String s4 = this.step4(s3);
             String s5 = this.step5(s4);
             arrstr.add(s5);
-        }
+        }}
         StringBuilder listString = new StringBuilder();
         for (String s : arrstr) {
             listString.append(s+" ");

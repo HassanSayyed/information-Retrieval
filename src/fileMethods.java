@@ -23,19 +23,28 @@ public class fileMethods {
 	
 	
 	public static int[] checkOccurenceOfwordsListInTextFile(String filePath, ArrayList<String> allWordsWithoutRep) throws FileNotFoundException {
-		int[] matrixRow = new int[allWordsWithoutRep.size()];
+		
 		LinkedList<String> allFileWordsList = textFileToStringList(filePath);  
+		
+		return checkOccurenceOfWordsListInLinkedList(allFileWordsList, allWordsWithoutRep);
+		
+	}
+	
+	
+	public static int[] checkOccurenceOfWordsListInLinkedList(LinkedList<String> allWordsList, ArrayList<String> allWordsWithoutRep) {
+		int[] matrixRow = new int[allWordsWithoutRep.size()];
 		
 		for (int i=0; i<allWordsWithoutRep.size(); i++) {
 			String word = allWordsWithoutRep.get(i);
 			int count = 0;
-			for (String temp: allFileWordsList) {
+			for (String temp: allWordsList) {
 				if(temp.equals(word)) count++;
 			}
 			matrixRow[i] = count;
 		}
 		
 		return matrixRow;
+		
 	}
 	
 	

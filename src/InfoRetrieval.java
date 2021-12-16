@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.bouncycastle.asn1.BEROctetStringGenerator;
+import javax.swing.border.EmptyBorder;
 
 
 
@@ -179,17 +179,54 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         String query = StringStopWordsMethods.sentenceWithoutStopListWords(inputScanner.nextLine()); 
         inputScanner.close();
         
-        LinkedList<String> queryList = new LinkedList<>(Arrays.asList(query.split("[\\n\\s+]")));
+        LinkedList<String> queryLinkedList = new LinkedList<>(Arrays.asList(query.split("\\s+")));
         
-        query = new Stemmer().completeStem(queryList);
         
-        System.out.println(query);
+        String[] queryWords = new Stemmer().completeStem(queryLinkedList).split("[\\n\\s+]");
+      
+        HashSet<String> queryHashSet = new HashSet<>();
         
+        for(String q : queryWords) {
+        	if(!q.isEmpty())
+        	 queryHashSet.add(q);
+        }
+        
+        // user query Term Frequency table (word : count)
+        ArrayList<String> queryWordsWithoutRep = new ArrayList<String>(queryHashSet);
+        int[] queryTermFreq = fileMethods.checkOccurenceOfWordsListInLinkedList(new LinkedList<>(Arrays.asList(queryWords)),queryWordsWithoutRep);
+        
+         
+        double[] queryWordsInAllWordsWithoutRepTfidf = new double[allWordsWithoutRepList.size()];
+        
+        for(int w = 0; w<allWordsWithoutRepList.size(); w++) {
+        	for(int q=0; q<queryWordsWithoutRep.size(); q++) {
+        		
+        		if(allWordsWithoutRepList.get(w).equals(queryWordsWithoutRep.get(q))) {
+        			
+        			queryWordsInAllWordsWithoutRepTfidf[w] = queryTermFreq[q] * Math.log10(sfxFiles.length/ Double.valueOf(docFreq[w]));
+        			break;
+        			
+        		}
+        	}
+        }
+        // query count in all words table ( word : allWordsWithoutRepList, count : queryWordsInAllWordsWithoutRep)
+        
+        
+        
+        
+        
+        
+        for(double x :  queryWordsInAllWordsWithoutRepTfidf)
+        	System.out.println("test x "+x);
+        
+        
+        System.out.println("------------------------Phase 4-------------------");
+        System.out.println("**************************************************");
         
 	}
 	
 	
-	
+
 
 
 

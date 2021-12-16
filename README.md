@@ -4,7 +4,7 @@
    - Text Files
    - PDF files (PDF Reader Library)
    - Images ( All types of Images suppored by Tesseract-**OCR** -> **O**ptical **C**harachter **R**ecognition engine)
- 2. Removing stopwords and handling two symboles '@' and '.'
+ 2. Removing stopwords and handling three symboles { @ . , }
  3. Write data files results in STP directory as Text files
  
  ###### Phase 2 Stemming
@@ -16,6 +16,11 @@
  1. Read data from SFX directory
  2. Initialize and fill the inverted file matrix
  3. Detect the new stopwords 
+ 
+ ###### Phase 4 Query
+ 1. Receive query from user
+ 2. Initialize and fill the weighted query list
+ 3. Rank the documents
  
  # System Requirements:
  1. Java 13, you can download it from https://www.oracle.com/java/technologies/javase/jdk13-archive-downloads.html

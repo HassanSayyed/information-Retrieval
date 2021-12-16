@@ -48,10 +48,14 @@ public class StringStopWordsMethods {
     	for (int i=0;i<list.size();i++) {
     		if(list.get(i).contains("@")) {
     			list.set(i, emailatStopWordVerification(list.get(i)));
-    			
-    		} if(list.get(i).contains(".")) {
+    		}
+    		if(list.get(i).contains(".")) {
     			list.set(i, dotStopWordVerification(list.get(i)));
     		}
+    		if(list.get(i).contains(",")) {
+    			list.set(i, commaStopWordVerification(list.get(i)));
+    		}
+    		
     	}
     	
     	StringBuilder stringBuilder = new StringBuilder();
@@ -78,6 +82,20 @@ public class StringStopWordsMethods {
     	
     	if(Pattern.matches(DOTENDING, word)) {
     		while (!word.isEmpty() && word.endsWith(".")) {
+    			word = word.substring(0, word.length()-1);
+    		}
+    	}
+    	
+    	
+		return word;
+    
+
+     }
+    
+    private static String commaStopWordVerification(String word) {
+    	
+    	if(Pattern.matches(DOTENDING, word)) {
+    		while (!word.isEmpty() && word.endsWith(",")) {
     			word = word.substring(0, word.length()-1);
     		}
     	}
