@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.swing.border.EmptyBorder;
 
 
 
@@ -191,7 +190,7 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         	 queryHashSet.add(q);
         }
         
-        // user query Term Frequency table (word : count)
+        // user query Term Frequency table (word : queryWordsWithoutRep , count : queryTermFreq)
         ArrayList<String> queryWordsWithoutRep = new ArrayList<String>(queryHashSet);
         int[] queryTermFreq = fileMethods.checkOccurenceOfWordsListInLinkedList(new LinkedList<>(Arrays.asList(queryWords)),queryWordsWithoutRep);
         
@@ -209,16 +208,47 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         		}
         	}
         }
-        // query count in all words table ( word : allWordsWithoutRepList, count : queryWordsInAllWordsWithoutRep)
+        // query count in all words table ( word : allWordsWithoutRepList, count : queryWordsInAllWordsWithoutRepTfidf)
         
         
+        /*
+        for(int x=0; x< queryWordsInAllWordsWithoutRepTfidf.length;x++) {
+        	System.out.println(" word "+allWordsWithoutRepList.get(x)+" : "+queryWordsInAllWordsWithoutRepTfidf[x]);
+        }*/
+        	
+        // cosin ( Doc & querty )
+        
+        double[] cosinDocRank = new double[sfxFiles.length];
         
         
+        double cosinNumerator;
+        double cosinDenominator;
+        double ti = 0;
+        double tj = 0;
         
+        for (int f=0; f< sfxFiles.length; f++) {
+        	
+        	cosinNumerator = 0;
+        	cosinDenominator = 1;
+        	
+        	
+        	
+        	for(int w=0;w<allWordsWithoutRepList.size();w++) {
+        		
+        		cosinNumerator += matrix[f][w] * queryWordsInAllWordsWithoutRepTfidf[w];
+        		ti += Math.pow( matrix[f][w] , 2);
+        		tj += Math.pow( queryWordsInAllWordsWithoutRepTfidf[w] , 2);
+        		cosinDenominator *= Math.sqrt(ti+tj);
+        	}
+        	
+        	cosinDocRank[f] = Double.isNaN(cosinNumerator/cosinDenominator)? 0.0 : cosinNumerator/cosinDenominator;
+        	
+        	
+        }
         
-        for(double x :  queryWordsInAllWordsWithoutRepTfidf)
-        	System.out.println("test x "+x);
-        
+        for(int f=0;f<sfxFiles.length;f++) {
+        	System.out.println("file "+sfxFiles[f].getName()+" cosin "+cosinDocRank[f]);
+        }
         
         System.out.println("------------------------Phase 4-------------------");
         System.out.println("**************************************************");
