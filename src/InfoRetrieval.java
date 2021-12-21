@@ -215,6 +215,8 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         for(int x=0; x< queryWordsInAllWordsWithoutRepTfidf.length;x++) {
         	System.out.println(" word "+allWordsWithoutRepList.get(x)+" : "+queryWordsInAllWordsWithoutRepTfidf[x]);
         }*/
+        
+       
         	
         // cosin ( Doc & querty )
         
@@ -226,6 +228,8 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         double ti = 0;
         double tj = 0;
         
+        
+        
         for (int f=0; f< sfxFiles.length; f++) {
         	
         	cosinNumerator = 0;
@@ -236,11 +240,12 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         	for(int w=0;w<allWordsWithoutRepList.size();w++) {
         		
         		cosinNumerator += matrix[f][w] * queryWordsInAllWordsWithoutRepTfidf[w];
-        		ti += Math.pow( matrix[f][w] , 2);
-        		tj += Math.pow( queryWordsInAllWordsWithoutRepTfidf[w] , 2);
-        		cosinDenominator *= Math.sqrt(ti+tj);
+        		ti = Math.pow( matrix[f][w] , 2);
+        		tj = Math.pow( queryWordsInAllWordsWithoutRepTfidf[w] , 2);
+        		cosinDenominator *= ti+tj==0 ? 1 :ti==tj? Math.sqrt(ti+tj):1;
         	}
         	
+        	System.out.println("file "+f+" Numa "+cosinNumerator+" Deno "+cosinDenominator);
         	cosinDocRank[f] = Double.isNaN(cosinNumerator/cosinDenominator)? 0.0 : cosinNumerator/cosinDenominator;
         	
         	
