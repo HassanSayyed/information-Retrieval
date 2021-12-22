@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -195,9 +196,9 @@ public class fileMethods {
 
 
 class SyncPipe  implements Runnable{
-	public SyncPipe(InputStream istrm, OutputStream ostrm) {
+	public SyncPipe(InputStream istrm, PrintStream err) {
 	      istrm_ = istrm;
-	      ostrm_ = ostrm;
+	      ostrm_ = err;
 	  }
 	  public void run() {
 	      try
@@ -213,7 +214,7 @@ class SyncPipe  implements Runnable{
 	          e.printStackTrace();
 	      }
 	  }
-	  private final OutputStream ostrm_;
+	  private final PrintStream ostrm_;
 	  private final InputStream istrm_;
 
 }

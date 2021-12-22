@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+
+
 
 
 
@@ -162,6 +163,7 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         for(int w=0; w < allWordsWithoutRepList.size(); w++) {
         	for(int f=0; f < sfxFiles.length; f++) {
         		matrix[f][w] = matrix[f][w] * Math.log10(sfxFiles.length/ Double.valueOf(docFreq[w]));
+        	
         	}
         }
         
@@ -177,6 +179,7 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         Scanner inputScanner =new  Scanner(System.in);
         String query = StringStopWordsMethods.sentenceWithoutStopListWords(inputScanner.nextLine()); 
         inputScanner.close();
+        long startTime = System.currentTimeMillis();
         
         LinkedList<String> queryLinkedList = new LinkedList<>(Arrays.asList(query.split("\\s+")));
         
@@ -211,8 +214,7 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         // query count in all words table ( word : allWordsWithoutRepList, count : queryWordsInAllWordsWithoutRepTfidf)
         
         
-        /*
-        for(int x=0; x< queryWordsInAllWordsWithoutRepTfidf.length;x++) {
+        /*for(int x=0; x< queryWordsInAllWordsWithoutRepTfidf.length;x++) {
         	System.out.println(" word "+allWordsWithoutRepList.get(x)+" : "+queryWordsInAllWordsWithoutRepTfidf[x]);
         }*/
         
@@ -235,28 +237,51 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         	cosinNumerator = 0;
         	cosinDenominator = 1;
         	
-        	
+        	ti=0;tj=0;
         	
         	for(int w=0;w<allWordsWithoutRepList.size();w++) {
         		
         		cosinNumerator += matrix[f][w] * queryWordsInAllWordsWithoutRepTfidf[w];
-        		ti = Math.pow( matrix[f][w] , 2);
-        		tj = Math.pow( queryWordsInAllWordsWithoutRepTfidf[w] , 2);
-        		cosinDenominator *= ti+tj==0 ? 1 :ti==tj? Math.sqrt(ti+tj):1;
+        		ti += Math.pow( matrix[f][w] , 2);
+        		tj += Math.pow( queryWordsInAllWordsWithoutRepTfidf[w] , 2);
+        		
         	}
-        	
-        	System.out.println("file "+f+" Numa "+cosinNumerator+" Deno "+cosinDenominator);
+        	cosinDenominator *= tj+ti==0 ? 1 : Math.sqrt(tj)*Math.sqrt(ti);
+        	//System.out.println("file "+f+" Numa "+cosinNumerator+" Deno "+cosinDenominator);
         	cosinDocRank[f] = Double.isNaN(cosinNumerator/cosinDenominator)? 0.0 : cosinNumerator/cosinDenominator;
         	
         	
         }
         
-        for(int f=0;f<sfxFiles.length;f++) {
+      /*  for(int f=0;f<sfxFiles.length;f++) {
         	System.out.println("file "+sfxFiles[f].getName()+" cosin "+cosinDocRank[f]);
-        }
+        }*/
+        
+        Pair[] cosinIndexValuePairs = new Pair[cosinDocRank.length];
+
+		for(int i=0; i<cosinDocRank.length; i++){
+			cosinIndexValuePairs[i]= new Pair(i, cosinDocRank[i]);
+		}
+		
+		int count = 0;
+		Arrays.sort(cosinIndexValuePairs);
+		
+		
+		for(Pair pair : cosinIndexValuePairs) {
+			if(pair.value!=0.0) {
+				count++;
+			System.out.println(count+" "+sfxFiles[pair.index].getName()+" : "+pair.value);
+								}
+			}
+		
+		
+		long endTime = System.currentTimeMillis();
+		 System.out.println("  ----------------------------------------------  ");
+		System.out.println("    "+count+" Results Found in "+(endTime-startTime)+" milliseconds");
         
         System.out.println("------------------------Phase 4-------------------");
         System.out.println("**************************************************");
+        
         
 	}
 	
