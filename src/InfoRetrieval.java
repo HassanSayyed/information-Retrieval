@@ -19,6 +19,7 @@ import java.util.Scanner;
 
 
 
+
 public class InfoRetrieval {
 
 public static void main(String[] args) throws FileNotFoundException, IOException, SecurityException{
@@ -163,11 +164,17 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         for(int w=0; w < allWordsWithoutRepList.size(); w++) {
         	for(int f=0; f < sfxFiles.length; f++) {
         		matrix[f][w] = matrix[f][w] * Math.log10(sfxFiles.length/ Double.valueOf(docFreq[w]));
-        	
+        		
         	}
         }
         
-        
+        System.out.println("Inverted File Matrix");
+        for(int f=0;f<sfxFiles.length;f++) {
+        	for(int w=0;w<allWordsWithoutRepList.size();w++) {
+        		System.out.print((Math.round(matrix[f][w]*1000))/1000.0+" | ");
+        	}
+        	System.out.println();
+        }
         
         
         System.out.println("------------------------Phase 3-------------------");
@@ -266,11 +273,11 @@ public static void main(String[] args) throws FileNotFoundException, IOException
 		int count = 0;
 		Arrays.sort(cosinIndexValuePairs);
 		
-		
+		System.out.println("Cosin Document Ranking (sorted)");
 		for(Pair pair : cosinIndexValuePairs) {
 			if(pair.value!=0.0) {
 				count++;
-			System.out.println(count+" "+sfxFiles[pair.index].getName()+" : "+pair.value);
+			System.out.println(count+" "+sfxFiles[pair.index].getName()+" : "+(Math.round(pair.value*10000))/10000.0);
 								}
 			}
 		
@@ -280,6 +287,25 @@ public static void main(String[] args) throws FileNotFoundException, IOException
 		System.out.println("    "+count+" Results Found in "+(endTime-startTime)+" milliseconds");
         
         System.out.println("------------------------Phase 4-------------------");
+        System.out.println("**************************************************");
+        
+        
+        
+        for(Pair pair: cosinIndexValuePairs) {
+        System.out.println(" "+sfxFiles[pair.index].getName());
+        	
+        }
+       
+        //static input //TODO convert to dynamic
+        
+        int[] relevantDoc = new int[] {1,0,1,0,0};//Given ,this should have the same size as the sfx files and in the same order as "cosinIndexValuePairs"
+        int relevantCount = 2;
+        
+        double[] precision =Evaluation.calcualtePricision(cosinIndexValuePairs, relevantDoc);
+        double[] recall = Evaluation.calculateRecall(cosinIndexValuePairs, relevantDoc, relevantCount);
+        Evaluation.Fmeasure(precision, recall,count);
+        
+        System.out.println("------------------------Phase 5-------------------");
         System.out.println("**************************************************");
         
         
