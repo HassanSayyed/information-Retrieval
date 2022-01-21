@@ -277,9 +277,10 @@ public static void main(String[] args) throws FileNotFoundException, IOException
 		for(Pair pair : cosinIndexValuePairs) {
 			if(pair.value!=0.0) {
 				count++;
+				}
 			System.out.println(count+" "+sfxFiles[pair.index].getName()+" : "+(Math.round(pair.value*10000))/10000.0);
 								}
-			}
+			
 		
 		
 		long endTime = System.currentTimeMillis();
@@ -296,8 +297,9 @@ public static void main(String[] args) throws FileNotFoundException, IOException
         	
         }
        
-        //static input //TODO convert to dynamic
-        
+        /*static input //TODO convert to dynamic
+         * you should comment the bellow section the first run and update relevantDoc based on relevant retrived document
+        */
         int[] relevantDoc = new int[] {1,0,1,0,0};//Given ,this should have the same size as the sfx files and in the same order as "cosinIndexValuePairs"
         int relevantCount = 2;
         
